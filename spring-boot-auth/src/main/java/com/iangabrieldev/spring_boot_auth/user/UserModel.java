@@ -4,8 +4,14 @@ import jakarta.annotation.Nonnull;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.Setter;
 
 @Entity(name = "users")
+@Builder
+@Getter
+@Setter
 public class UserModel {
     @Id
     private Long id;
