@@ -9,7 +9,6 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -21,7 +20,6 @@ import com.iangabrieldev.spring_boot_auth.storage.StorageService;
 public class FileSystemStorageService implements StorageService {
     private final Path rootLocation;
 
-    @Autowired
     public FileSystemStorageService(StorageProperties properties) {
         this.rootLocation = Paths.get(properties.getLocation());
     }
@@ -47,7 +45,7 @@ public class FileSystemStorageService implements StorageService {
             throw new StorageException("Failed to store file " + file.getOriginalFilename(), e);
         }
         try {
-            return InetAddress.getLocalHost().getHostName() + ":8080/files/" + destinationFile.toString();
+            return InetAddress.getLocalHost().getHostName() + destinationFile.toString();
         } catch (UnknownHostException e) {
             throw new StorageException("Failed to get hostname", e);
         }
