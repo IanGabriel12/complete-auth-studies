@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.iangabrieldev.spring_boot_auth.user.dto.AccountCreationRequestBody;
 import com.iangabrieldev.spring_boot_auth.user.dto.LoginRequestBody;
+import com.iangabrieldev.spring_boot_auth.user.dto.LoginView;
 import com.iangabrieldev.spring_boot_auth.user.dto.MeResponseBody;
 
 import jakarta.validation.Valid;
@@ -20,8 +21,9 @@ import jakarta.validation.Valid;
 public class UserController {
     @Autowired UserService userService;
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody LoginRequestBody loginRequestBody) {
-        throw new UnsupportedOperationException("Not implemented");
+    public ResponseEntity<LoginView> login(@RequestBody LoginRequestBody loginRequestBody) {
+        LoginView loginView = userService.login(loginRequestBody);
+        return ResponseEntity.ok().body(loginView);
     }
 
     @PostMapping("/register")

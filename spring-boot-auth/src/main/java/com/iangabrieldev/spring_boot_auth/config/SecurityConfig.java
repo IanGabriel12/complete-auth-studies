@@ -7,6 +7,9 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+
+import com.iangabrieldev.spring_boot_auth.jwt.JwtAuthenticationFilter;
 import com.iangabrieldev.spring_boot_auth.user.UserRepository;
 
 @Configuration
@@ -19,6 +22,7 @@ public class SecurityConfig {
     };
 
     @Autowired UserRepository userRepository;
+    @Autowired JwtAuthenticationFilter jwtAuthenticationFilter;
 
     @Bean
     protected SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -29,6 +33,8 @@ public class SecurityConfig {
                 auth
                 .requestMatchers(PUBLIC_ENDPOINTS).permitAll()
                 .anyRequest().authenticated()
-            ).build();
+            )
+            .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
+            .build();
     }
 }

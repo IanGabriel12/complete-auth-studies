@@ -9,20 +9,24 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import com.iangabrieldev.spring_boot_auth.config.SecurityConfig;
 import com.iangabrieldev.spring_boot_auth.expection.ApiException;
+import com.iangabrieldev.spring_boot_auth.user.UserDetailsImpl;
+import com.iangabrieldev.spring_boot_auth.user.UserModel;
+import com.iangabrieldev.spring_boot_auth.user.UserService;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
+@Component
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
     @Autowired private JwtService jwtService;
-    @Autowired private UserDetailsService userDetailsService;
+    @Autowired private UserService userService;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
@@ -32,9 +36,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             if(isTokenMalformatted(token)) {
                 throw new ApiException("Token malformatted", HttpStatus.UNAUTHORIZED);
             }
-            token.replace("Bearer ", "");
+            token = token.replace("Bearer ", "");
             String tokenSubject = jwtService.getSubjectFromToken(token);
-            UserDetails userDetails = userDetailsService.loadUserByUsername(tokenSubject);
+            logger.info(tokenSubject.equals("iangz"));
+            UserModel user = userService.findUserByUsername(tokenSubject);
+            UserDetails userDetails = new UserDetailsImpl(user);
             Authentication authentication = new UsernamePasswordAuthenticationToken(userDetails.getUsername(), null, userDetails.getAuthorities());
             SecurityContextHolder.getContext().setAuthentication(authentication);
         }
@@ -48,7 +54,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private boolean isEndpointPublic(HttpServletRequest request) {
         String requestUri = request.getRequestURI();
-        return !Arrays.asList(SecurityConfig.PUBLIC_ENDPOINTS).contains(requestUri);
+        return Arrays.asList(SecurityConfig.PUBLIC_ENDPOINTS).contains(requestUri);
     }
     
 }

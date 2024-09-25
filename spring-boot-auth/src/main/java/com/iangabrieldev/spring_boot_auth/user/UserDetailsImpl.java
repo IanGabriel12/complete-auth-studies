@@ -9,7 +9,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 public class UserDetailsImpl implements UserDetails {
     UserModel user;
 
-    UserDetailsImpl(UserModel user) {
+    public UserDetailsImpl(UserModel user) {
         this.user = user;
     }
 
