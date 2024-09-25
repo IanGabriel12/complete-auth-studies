@@ -25,13 +25,17 @@ public class FileSystemStorageService implements StorageService {
     }
 
     @Override
-    public String storeImage(MultipartFile file) {
-        if(file.isEmpty()) {
+    public String storeProfileImage(MultipartFile profileImage) {
+        if(profileImage.isEmpty()) {
             throw new StorageException("Failed to store empty file");
         }
 
+        if(!isImage(profileImage)) {
+            throw new StorageException("Failed to store file, not an image");
+        }
+
         Path destinationFile = this.rootLocation.resolve(
-            Paths.get(file.getOriginalFilename())
+            Paths.get(profileImage.getOriginalFilename())
         ).normalize().toAbsolutePath();
 
         if(!destinationFile.getParent().equals(this.rootLocation.toAbsolutePath())) {
@@ -39,10 +43,10 @@ public class FileSystemStorageService implements StorageService {
         }
 
         try {
-            InputStream inputStream = file.getInputStream();
+            InputStream inputStream = profileImage.getInputStream();
             Files.copy(inputStream, destinationFile, StandardCopyOption.REPLACE_EXISTING);
         } catch (IOException e) {
-            throw new StorageException("Failed to store file " + file.getOriginalFilename(), e);
+            throw new StorageException("Failed to store file " + profileImage.getOriginalFilename(), e);
         }
         try {
             return InetAddress.getLocalHost().getHostName() + destinationFile.toString();
@@ -57,5 +61,9 @@ public class FileSystemStorageService implements StorageService {
         } catch (IOException e) {
             throw new StorageException("Failed to initialize storage", e);
         }
+    }
+
+    private Boolean isImage(MultipartFile file) {
+        return file.getContentType().startsWith("image");
     }
 }
