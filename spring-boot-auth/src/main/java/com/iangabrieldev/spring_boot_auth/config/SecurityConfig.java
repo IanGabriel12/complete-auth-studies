@@ -18,7 +18,9 @@ public class SecurityConfig {
 
     public static final String[] PUBLIC_ENDPOINTS = {
         "/api/v1/user/register",
-        "/api/v1/user/login"
+        "/api/v1/user/login",
+        "/api/v1/user/recover-password",
+        "/api/v1/user/update-password"
     };
 
     @Autowired UserRepository userRepository;

@@ -17,6 +17,7 @@ import com.iangabrieldev.spring_boot_auth.user.dto.UserView;
 
 import jakarta.validation.Valid;
 
+
 @RestController
 @RequestMapping("/api/v1/user")
 public class UserController {
@@ -39,10 +40,4 @@ public class UserController {
         UserModel account = userService.findUserByUsername(authenticatedUsername);
         return ResponseEntity.ok().body(userMapper.toUserView(account));
     }
-
-    @PostMapping("/recover")
-    public ResponseEntity<String> recover(@RequestBody String email) {
-        throw new UnsupportedOperationException("Not implemented");
-    }
-
 }

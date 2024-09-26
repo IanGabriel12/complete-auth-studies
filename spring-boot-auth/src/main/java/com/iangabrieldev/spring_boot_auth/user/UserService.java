@@ -85,4 +85,8 @@ public class UserService {
     public UserModel findUserByUsername(String username) {
         return userRepository.findByUsername(username).orElseThrow(() -> new ApiException("Username not found", HttpStatus.NOT_FOUND));
     }
+
+    public UserModel findUserByEmail(String email) {
+        return userRepository.findByEmail(email).orElseThrow(() -> new ApiException("Email not found", HttpStatus.NOT_FOUND));
+    }
 }
