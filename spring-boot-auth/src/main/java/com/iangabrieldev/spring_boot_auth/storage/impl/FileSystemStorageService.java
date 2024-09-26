@@ -2,13 +2,13 @@ package com.iangabrieldev.spring_boot_auth.storage.impl;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.InetAddress;
-import java.net.UnknownHostException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.util.UUID;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -19,6 +19,9 @@ import com.iangabrieldev.spring_boot_auth.storage.StorageService;
 @Service
 public class FileSystemStorageService implements StorageService {
     private final Path rootLocation;
+
+    @Value("${storage.images.url}")
+    private String imagesUrl;
 
     public FileSystemStorageService(StorageProperties properties) {
         this.rootLocation = Paths.get(properties.getLocation());
@@ -34,8 +37,12 @@ public class FileSystemStorageService implements StorageService {
             throw new StorageException("Failed to store file, not an image");
         }
 
+        String randomUuid = UUID.randomUUID().toString();
+        String[] imageNameParts = profileImage.getOriginalFilename().split("\\.", 2);
+        String imageExtension = imageNameParts[1];
+        String imageName = randomUuid + "." + imageExtension;
         Path destinationFile = this.rootLocation.resolve(
-            Paths.get(profileImage.getOriginalFilename())
+            Paths.get(imageName)
         ).normalize().toAbsolutePath();
 
         if(!destinationFile.getParent().equals(this.rootLocation.toAbsolutePath())) {
@@ -48,11 +55,7 @@ public class FileSystemStorageService implements StorageService {
         } catch (IOException e) {
             throw new StorageException("Failed to store file " + profileImage.getOriginalFilename(), e);
         }
-        try {
-            return InetAddress.getLocalHost().getHostName() + destinationFile.toString();
-        } catch (UnknownHostException e) {
-            throw new StorageException("Failed to get hostname", e);
-        }
+        return imagesUrl + "/" + imageName;
     }
     @Override
     public void init() {

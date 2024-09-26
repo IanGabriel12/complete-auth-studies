@@ -9,6 +9,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -53,8 +54,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
 
     private boolean isEndpointPublic(HttpServletRequest request) {
-        String requestUri = request.getRequestURI();
-        return Arrays.asList(SecurityConfig.PUBLIC_ENDPOINTS).contains(requestUri);
+        return Arrays.asList(SecurityConfig.PUBLIC_ENDPOINTS)
+            .stream()
+            .anyMatch(endpoint -> AntPathRequestMatcher.antMatcher(endpoint).matches(request));
     }
     
 }

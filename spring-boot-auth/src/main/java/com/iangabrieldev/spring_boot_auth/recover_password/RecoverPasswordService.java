@@ -47,7 +47,7 @@ public class RecoverPasswordService {
     }
 
     public void sendEmailWithToken(String userEmail, String token) {
-        String message = "Para recuperar sua senha, clique no link a seguir: " + recoverPasswordFrontendURL + token;
+        String message = "Para recuperar sua senha, clique no link a seguir: " + recoverPasswordFrontendURL + "/" + token;
         emailService.sendSimpleMessage(userEmail, "Teste autenticação: Recuperação de senha", message);
     }
 

@@ -20,11 +20,13 @@ public class SecurityConfig {
         "/api/v1/user/register",
         "/api/v1/user/login",
         "/api/v1/user/recover-password",
-        "/api/v1/user/update-password"
+        "/api/v1/user/update-password",
+        "/images/**"
     };
 
     @Autowired UserRepository userRepository;
     @Autowired JwtAuthenticationFilter jwtAuthenticationFilter;
+
 
     @Bean
     protected SecurityFilterChain filterChain(HttpSecurity http) throws Exception {

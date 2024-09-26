@@ -9,5 +9,5 @@ import lombok.Setter;
 @Getter
 @Setter
 public class StorageProperties {
-    private String location = "upload-dir";
+    private String location = "src/main/resources/static/images";
 }
