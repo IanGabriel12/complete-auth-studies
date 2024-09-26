@@ -89,4 +89,11 @@ public class UserService {
     public UserModel findUserByEmail(String email) {
         return userRepository.findByEmail(email).orElseThrow(() -> new ApiException("Email not found", HttpStatus.NOT_FOUND));
     }
+
+    public void updatePasswordOfUser(UserModel user, String newPassword) {
+        BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
+        String encryptedPassword = bCryptPasswordEncoder.encode(newPassword);
+        user.setPassword(encryptedPassword);
+        userRepository.save(user);
+    }
 }
