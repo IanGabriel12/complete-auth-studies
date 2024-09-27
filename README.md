@@ -20,4 +20,4 @@ export MAIL_PASSWORD={ your google account application password }
 
 Notice that `MAIL_PASSWORD` is the google application password, not your regular password. You can read about application passwords [here](https://support.google.com/accounts/answer/185833?hl=en).
 
-Then go to `/spring-boot-auth` dir. After that, startup database with `docker compose up -d`. Finally, startup the API with `./mvnw spring-boot:run`
+First, startup database with `docker compose up -d`. After that, go to `/spring-boot-auth` dir. Finally, startup the API with `./mvnw spring-boot:run`
