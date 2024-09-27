@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 
 import com.iangabrieldev.spring_boot_auth.expection.ApiException;
 import com.iangabrieldev.spring_boot_auth.jwt.JwtService;
-import com.iangabrieldev.spring_boot_auth.storage.impl.FileSystemStorageService;
 import com.iangabrieldev.spring_boot_auth.user.dto.AccountCreationRequestBody;
 import com.iangabrieldev.spring_boot_auth.user.dto.LoginRequestBody;
 import com.iangabrieldev.spring_boot_auth.user.dto.LoginView;
@@ -19,8 +18,6 @@ import jakarta.transaction.Transactional;
 public class UserService {
     @Autowired
     private UserRepository userRepository;
-    @Autowired
-    private FileSystemStorageService storageService;
     @Autowired
     private JwtService jwtService;
 
@@ -40,10 +37,8 @@ public class UserService {
             .email(accountCreationRequestBody.getEmail())
             .name(accountCreationRequestBody.getName())
             .password(encryptedPassword)
-            .username(accountCreationRequestBody.getUsername()).build();
-        userRepository.save(userModel);
-        String profileImageUrl = storageService.storeProfileImage(accountCreationRequestBody.getProfilePicture());
-        userModel.setProfileImageUrl(profileImageUrl);
+            .username(accountCreationRequestBody.getUsername())
+            .profileImageUrl(accountCreationRequestBody.getProfileImageUrl()).build();
         userRepository.save(userModel);
         return userModel;
     }

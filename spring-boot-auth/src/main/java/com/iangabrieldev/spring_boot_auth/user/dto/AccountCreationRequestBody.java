@@ -1,7 +1,5 @@
 package com.iangabrieldev.spring_boot_auth.user.dto;
 
-import org.springframework.web.multipart.MultipartFile;
-
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -19,5 +17,5 @@ public class AccountCreationRequestBody {
     @NotNull private String password;
     @NotNull private String email;
     @NotNull private String name;
-    private MultipartFile profilePicture;
+    @NotNull private String profileImageUrl;
 }

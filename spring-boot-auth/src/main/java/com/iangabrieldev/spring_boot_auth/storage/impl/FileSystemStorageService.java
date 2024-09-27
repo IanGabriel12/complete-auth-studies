@@ -28,17 +28,17 @@ public class FileSystemStorageService implements StorageService {
     }
 
     @Override
-    public String storeProfileImage(MultipartFile profileImage) {
-        if(profileImage.isEmpty()) {
+    public String storeImage(MultipartFile image) {
+        if(image.isEmpty()) {
             throw new StorageException("Failed to store empty file");
         }
 
-        if(!isImage(profileImage)) {
+        if(!isImage(image)) {
             throw new StorageException("Failed to store file, not an image");
         }
 
         String randomUuid = UUID.randomUUID().toString();
-        String[] imageNameParts = profileImage.getOriginalFilename().split("\\.", 2);
+        String[] imageNameParts = image.getOriginalFilename().split("\\.", 2);
         String imageExtension = imageNameParts[1];
         String imageName = randomUuid + "." + imageExtension;
         Path destinationFile = this.rootLocation.resolve(
@@ -50,10 +50,10 @@ public class FileSystemStorageService implements StorageService {
         }
 
         try {
-            InputStream inputStream = profileImage.getInputStream();
+            InputStream inputStream = image.getInputStream();
             Files.copy(inputStream, destinationFile, StandardCopyOption.REPLACE_EXISTING);
         } catch (IOException e) {
-            throw new StorageException("Failed to store file " + profileImage.getOriginalFilename(), e);
+            throw new StorageException("Failed to store file " + image.getOriginalFilename(), e);
         }
         return imagesUrl + "/" + imageName;
     }

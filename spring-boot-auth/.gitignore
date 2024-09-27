@@ -34,5 +34,5 @@ build/
 .vscode/
 
 ### Images ###
-src/main/resources/public/images/**
-!src/main/resources/public/images/.gitkeep
+src/main/resources/static/images/**
+!src/main/resources/static/images/.gitkeep

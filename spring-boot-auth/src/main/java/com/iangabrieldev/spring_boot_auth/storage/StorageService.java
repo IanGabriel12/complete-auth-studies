@@ -4,5 +4,5 @@ import org.springframework.web.multipart.MultipartFile;
 
 public interface StorageService {
     void init();
-    String storeProfileImage(MultipartFile profileImage);
+    String storeImage(MultipartFile image);
 }
