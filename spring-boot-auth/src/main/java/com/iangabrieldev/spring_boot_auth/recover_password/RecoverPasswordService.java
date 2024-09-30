@@ -16,12 +16,14 @@ import com.iangabrieldev.spring_boot_auth.user.UserService;
 
 @Service
 public class RecoverPasswordService {
-    @Autowired UserService userService;
-    @Autowired RecoverPasswordRepository recoverPasswordRepository;
-    @Autowired EmailService emailService;
+    @Autowired private UserService userService;
+    @Autowired private RecoverPasswordRepository recoverPasswordRepository;
+    @Autowired private EmailService emailService;
 
-    @Value("${app.constants.recover-password-frontend-url}")
-    String recoverPasswordFrontendURL;
+    @Value("${frontend.url}")
+    private String recoverPasswordFrontendURL;
+
+    private final String FRONTEND_RECODER_URI = "/recover-password";
 
     public String createOrUpdateTokenOfUser(String userEmail) {
         UserModel user = userService.findUserByEmail(userEmail);
@@ -47,7 +49,7 @@ public class RecoverPasswordService {
     }
 
     public void sendEmailWithToken(String userEmail, String token) {
-        String message = "Para recuperar sua senha, clique no link a seguir: " + recoverPasswordFrontendURL + "/" + token;
+        String message = "Para recuperar sua senha, clique no link a seguir: " + recoverPasswordFrontendURL + FRONTEND_RECODER_URI + token;
         emailService.sendSimpleMessage(userEmail, "Teste autenticação: Recuperação de senha", message);
     }
 

@@ -42,5 +42,9 @@ public class UserModel{
     private String name;
 
     @Column(unique = true)
-    private String profileImageUrl;    
+    private String profileImageUrl;  
+    
+    @Column
+    @Builder.Default
+    private Boolean emailConfirmed = false;
 }

@@ -21,6 +21,7 @@ public class SecurityConfig {
         "/api/v1/user/login",
         "/api/v1/user/recover-password",
         "/api/v1/user/update-password",
+        "/api/v1/user/confirm-email",
         "/api/v1/upload/image",
         "/images/**"
     };
