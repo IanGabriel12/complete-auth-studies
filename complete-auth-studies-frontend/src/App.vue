@@ -1,31 +1,26 @@
 <script setup lang="ts">
+import FormField from "@/components/FormField.vue";
+import ImageUpload from "@/components/ImageUpload.vue";
 </script>
 
 <template>
-  <div class="flex h-full">
-    <div class="bg-red-600 w-4/6 h-f"></div>
+  <div class="flex h-full justify-center">
+    <form class="mt-16 w-96" @submit.prevent>
+      <h1 class="text-center text-red-600 font-bold text-4xl">Create an account</h1>
+      <p class="text-center mt-4 text-gray-500">Already have an account? <a class="text-red-500 underline">Sign in</a></p>
 
-    <main id="login" class="flex mt-60 justify-center w-2/6">
-      
-      <form @submit.prevent class="w-96">
-        <h1 class="text-red-600 font-bold text-5xl">Welcome back</h1>
-        <span class="text-sm text-gray-500">Do not have an account? <a class="text-red-500 underline">Create one here.</a></span>
-        
-        <div class="field mt-8">
-          <label for="username" class="block text-red-600 text-md font-semibold">Username</label>
-          <input type="text" name="username" class="p-1 border-red-200 border-2 rounded-md mt-1 w-full shadow-md">
-        </div>
+      <div class="mt-8">
+        <label for="profile" class="text-red-600 font-bold">Profile picture</label>
+        <ImageUpload class="mt-2"/>
+      </div>
+      <FormField class="mt-4" name="fullname" label="Full name" />
+      <FormField class="mt-4" type="email" name="email" label="E-mail" />
+      <FormField class="mt-4" name="username" label="Username" />
+      <FormField class="mt-4" name="password" label="Password" type="password"/>
+      <FormField class="mt-4" name="confirm" label="Confirm password" type="password" />
 
-        <div class="field mt-4">
-          <label for="password" class="text-red-600 text-md font-semibold">Password</label>
-          <input type="password" name="password" id="password" class="p-1 border-red-200 border-2 rounded-md mt-1 w-full shadow-md">
-          <a class="text-sm text-red-500 underline block mt-1">Forgot my password</a>
-        </div>
-
-        <button class="mt-6 w-full bg-red-600 p-2 text-white rounded-md">Login</button>
-      </form>
-      
-    </main>
+      <button class="w-full bg-red-600 mt-8 text-white rounded-md py-2 hover:bg-red-700">Sign up</button>
+    </form>
   </div>
 </template>
 
